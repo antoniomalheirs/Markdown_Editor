@@ -1,0 +1,318 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+}
+
+@layer base {
+  :root {
+    --background: #ffffff;
+    --foreground: #171717;
+    --border: #e2e8f0;
+    --muted: #f8fafc;
+    --code-bg: #f8fafc;
+    --code-text: #0f172a;
+    /* Darker text for Light Mode */
+    --code-header: #f1f5f9;
+  }
+
+  .dark {
+    --background: #0f172a;
+    --foreground: #f8fafc;
+    --border: #1e293b;
+    --muted: #1e293b;
+    --code-bg: #1a1b26;
+    --code-text: #a9b1d6;
+    --code-header: #24283b;
+  }
+
+  body {
+    color: var(--foreground);
+    background: var(--background);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+}
+
+/* External Library Styles */
+@import "katex/dist/katex.min.css";
+@import "highlight.js/styles/github.css";
+
+/* Custom Editor Styles */
+.cm-editor {
+  outline: none !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+  font-size: 15px;
+}
+
+.cm-scroller {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+/* Markdown Preview Styling */
+.prose {
+  max-width: none;
+}
+
+/* Remove default backticks from prose */
+.prose code::before,
+.prose code::after {
+  content: "" !important;
+}
+
+.prose pre {
+  background-color: var(--code-bg) !important;
+  padding: 0 !important;
+  border: none !important;
+  margin: 1.5rem 0 !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Theme-aware highlight adjustments for better contrast */
+.dark .hljs {
+  background: transparent !important;
+  color: var(--code-text) !important;
+}
+
+.dark .hljs-keyword,
+.dark .hljs-selector-tag,
+.dark .hljs-literal,
+.dark .hljs-section {
+  color: #7aa2f7;
+}
+
+.dark .hljs-string,
+.dark .hljs-addition {
+  color: #9cebaf;
+}
+
+.dark .hljs-comment,
+.dark .hljs-quote {
+  color: #565f89;
+}
+
+.dark .hljs-number,
+.dark .hljs-type {
+  color: #ff9e64;
+}
+
+.dark .hljs-title,
+.dark .hljs-name {
+  color: #e0af68;
+}
+
+/* Animations */
+* {
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+@media print {
+
+  /* Global Reset for Print */
+  /* Force Light Theme Variables */
+  :root,
+  .dark {
+    --background: #ffffff !important;
+    --foreground: #171717 !important;
+    --border: #e2e8f0 !important;
+    --muted: #f8fafc !important;
+    --code-bg: #f8fafc !important;
+    --code-text: #0f172a !important;
+    --code-header: #f1f5f9 !important;
+  }
+
+  /* Hide all elements by default */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Reset basic page structure */
+  html,
+  body {
+    height: auto !important;
+    min-height: 100% !important;
+    overflow: visible !important;
+    background: white !important;
+    color: black !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* aggressive reset for all potential containers to prevent clipping */
+  main,
+  div,
+  section,
+  article {
+    overflow: visible !important;
+    height: auto !important;
+    display: block !important;
+    position: static !important;
+    /* Force static to ensure absolute child anchors to body */
+    transform: none !important;
+    /* Prevent stacking context traps */
+  }
+
+  /* Re-enable visibility for preview */
+  #preview-container,
+  #preview-container * {
+    visibility: visible;
+  }
+
+  /* Position the preview container to take up the full page */
+  #preview-container {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    min-height: 100% !important;
+    margin: 0 !important;
+    padding: 20px !important;
+    /* Add some padding for paper */
+    overflow: visible !important;
+    background: white !important;
+    color: black !important;
+    max-width: none !important;
+    z-index: 9999 !important;
+    display: block !important;
+    display: block !important;
+    float: none !important;
+    border: none !important;
+    /* Remove any dark mode borders */
+  }
+
+  /* Force Prose Variables to Light Mode values */
+  .prose {
+    --tw-prose-body: #374151 !important;
+    --tw-prose-headings: #111827 !important;
+    --tw-prose-links: #111827 !important;
+    --tw-prose-bold: #111827 !important;
+    --tw-prose-counters: #6b7280 !important;
+    --tw-prose-bullets: #4b5563 !important;
+    --tw-prose-hr: #e5e7eb !important;
+    --tw-prose-quotes: #111827 !important;
+    --tw-prose-quote-borders: #e5e7eb !important;
+    --tw-prose-captions: #6b7280 !important;
+    --tw-prose-code: #111827 !important;
+    --tw-prose-pre-code: #e5e7eb !important;
+    --tw-prose-pre-bg: #1f2937 !important;
+    --tw-prose-th-borders: #d1d5db !important;
+    --tw-prose-td-borders: #e5e7eb !important;
+
+    color: #374151 !important;
+  }
+
+  /* Ensure highlight.js uses light theme colors */
+  .hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 0.5em;
+    color: #333 !important;
+    background: #f8f8f8 !important;
+  }
+
+  /* Force specific syntax colors to be visible on white */
+  .hljs-comment,
+  .hljs-quote {
+    color: #998 !important;
+    font-style: italic !important;
+  }
+
+  .hljs-keyword,
+  .hljs-selector-tag,
+  .hljs-subst {
+    color: #333 !important;
+    font-weight: bold !important;
+  }
+
+  .hljs-number,
+  .hljs-literal,
+  .hljs-variable,
+  .hljs-template-variable,
+  .hljs-tag .hljs-attr {
+    color: #008080 !important;
+  }
+
+  .hljs-string,
+  .hljs-doctag {
+    color: #d14 !important;
+  }
+
+  .hljs-title,
+  .hljs-section,
+  .hljs-selector-id {
+    color: #900 !important;
+    font-weight: bold !important;
+  }
+
+  /* Exclude elements that need background color like marks */
+  #preview-container mark {
+    background-color: #fef08a !important;
+    /* yellow-200 */
+    color: black !important;
+  }
+
+  #preview-container pre {
+    background-color: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+  }
+
+  #preview-container code {
+    color: #0f172a !important;
+    background-color: transparent !important;
+    /* Let pre handle bg for blocks */
+  }
+
+  /* Improve typography for print */
+  .prose {
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+    max-width: 100% !important;
+  }
+
+  /* Ensure links are readable */
+  .prose a {
+    text-decoration: underline !important;
+    color: #000 !important;
+  }
+
+  /* Ensure code blocks look good and don't break wildly */
+  .prose pre {
+    border: 1px solid #ccc !important;
+    background: #f5f5f5 !important;
+    page-break-inside: avoid !important;
+    white-space: pre-wrap !important;
+    /* Prevent code cutoff */
+    word-break: break-all !important;
+  }
+
+  .prose blockquote {
+    page-break-inside: avoid !important;
+  }
+
+  /* Ensure headings don't break awkwardly */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Hide scrollbars */
+  ::-webkit-scrollbar {
+    display: none !important;
+  }
+}
