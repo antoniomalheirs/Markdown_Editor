@@ -2,10 +2,10 @@
 
 import React from "react";
 import {
-    Bold, Italic, Link, Image, Table, Heading1, Heading2, Heading3,
-    List, ListOrdered, CheckSquare, Code, Quote, Save,
+    Bold, Italic, Link, Image as ImageIcon, Table, Heading1, Heading2, Heading3,
+    List, ListOrdered, CheckSquare, Code, Quote,
     FileUp, FileDown, Moon, Sun, Type, Minus, Strikethrough,
-    Underline, Highlighter, Eye, EyeOff
+    Underline, Highlighter
 } from "lucide-react";
 
 interface ToolbarProps {
@@ -19,55 +19,65 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAction, isDark, toggleTheme }) => {
         { icon: Heading1, label: "H1", action: "h1" },
         { icon: Heading2, label: "H2", action: "h2" },
         { icon: Heading3, label: "H3", action: "h3" },
-        { icon: Bold, label: "Negrito", action: "bold" },
-        { icon: Italic, label: "Itálico", action: "italic" },
-        { icon: Underline, label: "Sublinhado", action: "underline" },
-        { icon: Strikethrough, label: "Riscado", action: "strikethrough" },
-        { icon: Highlighter, label: "Destaque", action: "highlight" },
-        { icon: Type, label: "Código Inline", action: "inline-code" },
-        { icon: Code, label: "Bloco de Código", action: "code" },
-        { icon: Quote, label: "Citação", action: "quote" },
+        { type: "separator" },
+        { icon: Bold, label: "Bold", action: "bold" },
+        { icon: Italic, label: "Italic", action: "italic" },
+        { icon: Underline, label: "Underline", action: "underline" },
+        { icon: Strikethrough, label: "Strikethrough", action: "strikethrough" },
+        { icon: Highlighter, label: "Highlight", action: "highlight" },
+        { type: "separator" },
+        { icon: Type, label: "Inline Code", action: "inline-code" },
+        { icon: Code, label: "Code Block", action: "code" },
+        { icon: Quote, label: "Quote", action: "quote" },
         { icon: Link, label: "Link", action: "link" },
-        { icon: Image, label: "Imagem", action: "image" },
-        { icon: List, label: "Lista", action: "ul" },
-        { icon: ListOrdered, label: "Lista Ordenada", action: "ol" },
-        { icon: CheckSquare, label: "Checklist", action: "task" },
-        { icon: Minus, label: "Linha Horizontal", action: "hr" },
-        { icon: Table, label: "Tabela", action: "table" },
+        { icon: ImageIcon, label: "Image", action: "image" },
+        { type: "separator" },
+        { icon: List, label: "List", action: "ul" },
+        { icon: ListOrdered, label: "Ordered List", action: "ol" },
+        { icon: CheckSquare, label: "Task List", action: "task" },
+        { icon: Minus, label: "Horizontal Line", action: "hr" },
+        { icon: Table, label: "Table", action: "table" },
     ];
 
     return (
-        <div className="h-12 border-b border-border bg-muted/30 flex items-center justify-between px-4 overflow-x-auto no-scrollbar shrink-0 shadow-sm">
-            <div className="flex items-center gap-0.5">
-                {tools.map((tool) => (
-                    <button
-                        key={tool.action}
-                        onClick={() => onAction(tool.action)}
-                        className="p-2 hover:bg-background rounded-md transition-all text-foreground/60 hover:text-foreground hover:shadow-sm"
-                        title={tool.label}
-                    >
-                        <tool.icon size={18} />
-                    </button>
-                ))}
-                <div className="w-px h-6 bg-border mx-2" />
-                <button onClick={() => onAction("import")} className="p-2 hover:bg-background rounded-md transition-all text-foreground/60 hover:text-foreground" title="Importar (.md)">
-                    <FileUp size={18} />
+        <div className="h-10 border-b border-gray-200 dark:border-gray-800 bg-muted/5 flex items-center justify-between px-2 overflow-x-auto no-scrollbar shrink-0">
+            <div className="flex items-center gap-0.5 whitespace-nowrap">
+                {tools.map((tool, idx) => {
+                    if (tool.type === "separator") {
+                        return <div key={`sep-${idx}`} className="w-[1px] h-4 bg-border mx-1.5" />;
+                    }
+                    const Icon = tool.icon!;
+                    return (
+                        <button
+                            key={tool.action}
+                            onClick={() => onAction(tool.action!)}
+                            className="p-1.5 hover:bg-muted/50 rounded transition-colors text-foreground/60 hover:text-foreground active:scale-95 flex items-center justify-center w-7 h-7"
+                            title={tool.label}
+                        >
+                            <Icon size={14} strokeWidth={2.5} />
+                        </button>
+                    );
+                })}
+                <div className="w-[1px] h-4 bg-border mx-1.5" />
+                <button onClick={() => onAction("import")} className="flex items-center gap-1.5 p-1.5 hover:bg-muted/50 rounded transition-colors text-foreground/60 hover:text-foreground h-7 px-2 text-xs font-semibold" title="Import (.md)">
+                    <FileUp size={14} /> Import
                 </button>
-                <button onClick={() => onAction("export-md")} className="p-2 hover:bg-background rounded-md transition-all text-foreground/60 hover:text-foreground" title="Exportar MD">
-                    <FileDown size={18} />
+                <button onClick={() => onAction("export-md")} className="flex items-center gap-1.5 p-1.5 hover:bg-muted/50 rounded transition-colors text-foreground/60 hover:text-foreground h-7 px-2 text-xs font-semibold" title="Export MD">
+                    <FileDown size={14} /> Export
                 </button>
-                <button onClick={() => onAction("export-pdf")} className="p-2 hover:bg-background rounded-md transition-all text-red-400 hover:text-red-500" title="Exportar PDF">
-                    <FileDown size={18} />
+                <div className="w-[1px] h-4 bg-border mx-1.5" />
+                <button onClick={() => onAction("export-pdf")} className="flex items-center gap-1.5 p-1.5 hover:bg-red-500/10 rounded transition-colors text-red-500/70 hover:text-red-500 h-7 px-2 text-xs font-semibold" title="Export PDF">
+                    <FileDown size={14} /> PDF
                 </button>
             </div>
 
             <div className="flex items-center gap-2 ml-4">
                 <button
                     onClick={toggleTheme}
-                    className="p-2 hover:bg-background rounded-md transition-all text-foreground/60 hover:text-foreground"
-                    title={isDark ? "Modo Claro" : "Modo Escuro"}
+                    className="p-1.5 hover:bg-muted/50 rounded transition-colors text-foreground/60 hover:text-foreground flex items-center justify-center w-7 h-7"
+                    title={isDark ? "Light Mode" : "Dark Mode"}
                 >
-                    {isDark ? <Sun size={18} /> : <Moon size={18} />}
+                    {isDark ? <Sun size={14} /> : <Moon size={14} />}
                 </button>
             </div>
         </div>
