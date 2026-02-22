@@ -128,6 +128,23 @@ export const useWorkspace = create<WorkspaceState>()(
 
             migrateLegacyContent: () => {
                 const state = get();
+
+                // --- GARBAGE COLLECTION ---
+                // Clean up empty or untouched "Novo Arquivo" notes to avoid saving trash
+                const hasGarbage = state.notes.some(n =>
+                    !n.content.trim() ||
+                    n.content === "# Novo Arquivo\n\nComece a escrever aqui..."
+                );
+
+                if (hasGarbage && state.notes.length > 1) {
+                    set((s) => ({
+                        notes: s.notes.filter(n =>
+                            n.content.trim() !== "" &&
+                            n.content !== "# Novo Arquivo\n\nComece a escrever aqui..."
+                        )
+                    }));
+                }
+
                 if (state.notes.length > 0) return; // Already migrated or started fresh
 
                 // Check if user has legacy raw string in local storage

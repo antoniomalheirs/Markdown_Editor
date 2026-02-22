@@ -245,9 +245,9 @@ export function useEditor() {
     }, [localContent, activeNote, activeNoteId, updateNote]);
 
     const handleImageDrop = useCallback((file: File, editorRef: React.RefObject<any>) => {
-        const MAX_SIZE_MB = 2;
+        const MAX_SIZE_MB = 0.5; // Reduced from 2MB to 0.5MB to save localStorage space
         if (file.size > MAX_SIZE_MB * 1024 * 1024) {
-            alert(`Para otimizar o navegador, a imagem deve ser menor que ${MAX_SIZE_MB}MB.`);
+            alert(`Para não sobrecarregar o armazenamento local do navegador, a imagem deve ser menor que 500KB.`);
             return;
         }
         const reader = new FileReader();
